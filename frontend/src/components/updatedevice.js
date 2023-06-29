@@ -13,7 +13,31 @@ const UpdateDevice = () => {
   const [motherName, setMotherName] = useState("");
   useEffect(() => {
     setDeviceID(searchParams.get("deviceID"));
+    getDeviceDetials();
   }, []);
+  const getDeviceDetials = () => {
+    fetch(constants.baseUrl + "/get-details", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        deviceID: searchParams.get("deviceID"),
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setDeviceID(data.data.deviceID);
+        setAttenderName(data.data.attenderName);
+        setAttenderEmail(data.data.attenderEmail);
+        setDoctorName(data.data.doctorName);
+        setDoctorEmail(data.data.doctorEmail);
+        setAge(data.data.age);
+        setMotherName(data.data.motherName);
+      });
+  };
   const SubmitDetails = (e) => {
     e.preventDefault();
     fetch(constants.baseUrl + "/update", {
