@@ -32,49 +32,27 @@ const options = {
   },
 };
 
-const HeartRate = () => {
-  const [data, setData] = useState([]);
-  const [state, setState] = useState(false);
-  useEffect(() => {
-    fetch(constants.baseUrl + "/get-data", {
-      method: "GET",
-      headers: {
-        "content-type": "Application/json",
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setData(data.data);
-      });
-    console.log(data[0]);
-    setState(true);
-  }, []);
-  if (state) {
-    return (
-      <>
-        {data.map((d) => {
-          return (
-            <Line
-              options={options}
-              data={{
-                labels: d.updatedAt,
-                datasets: [
-                  {
-                    data: d.heartRate,
-                    borderColor: "rgb(255, 99, 132)",
-                    backgroundColor: "rgba(255, 99, 132, 0.5)",
-                  },
-                ],
-              }}
-            />
-          );
-        })}
-      </>
-    );
+const HeartRate = (props) => {
+  console.log(props);
+
+  if (props.heartRate.length === 0 || props.dates.length === 0) {
+    return <h1>Loading</h1>;
   } else {
-    return <h1> Loading </h1>;
+    return (
+      <Line
+        options={options}
+        data={{
+          labels: props.dates,
+          datasets: [
+            {
+              data: props.heartRate,
+              borderColor: "rgb(255, 99, 132)",
+              backgroundColor: "rgba(255, 99, 132, 0.5)",
+            },
+          ],
+        }}
+      />
+    );
   }
 };
 

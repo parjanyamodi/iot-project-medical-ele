@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import constants from "../constants.json";
 
 const UpdateDevice = () => {
+  const [searchParams] = useSearchParams();
   const [deviceID, setDeviceID] = useState("");
   const [attenderName, setAttenderName] = useState("");
   const [attenderEmail, setAttenderEmail] = useState("");
@@ -9,7 +11,9 @@ const UpdateDevice = () => {
   const [doctorEmail, setDoctorEmail] = useState("");
   const [age, setAge] = useState(0);
   const [motherName, setMotherName] = useState("");
-
+  useEffect(() => {
+    setDeviceID(searchParams.get("deviceID"));
+  }, []);
   const SubmitDetails = (e) => {
     e.preventDefault();
     fetch(constants.baseUrl + "/update", {
@@ -31,12 +35,24 @@ const UpdateDevice = () => {
         return res.json();
       })
       .then((data) => {
-        alert(data.inserted ? "Data Updated" : "");
+        alert(data.inserted ? "Data Updated" : "Error occurred");
       });
   };
   return (
-    <div className="container">
-      <div className="row justify-content-center mt-5">
+    <div className="container mt-5">
+      <div className="row text-start">
+        <div className="col-12">
+          <button
+            className="btn btn-danger"
+            onClick={(e) =>
+              window.location.replace("/dashboard?deviceID=" + deviceID)
+            }
+          >
+            Back
+          </button>
+        </div>
+      </div>
+      <div className="row justify-content-center mt-5 text-start">
         <div className="col-md-6 col-12 ">
           <form>
             <div class="mb-3">
@@ -49,6 +65,7 @@ const UpdateDevice = () => {
                 onChange={(e) => setDeviceID(e.target.value)}
                 value={deviceID}
                 aria-describedby="emailHelp"
+                disabled
               />
             </div>
             <div class="mb-3">

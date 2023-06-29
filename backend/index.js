@@ -139,6 +139,15 @@ app.get("/api/device", async (req, res) => {
     res.status(500);
   }
 });
+app.post("/api/get-details", async (req, res) => {
+  try {
+    const device = await Device.findOne({ deviceID: req.body.deviceID });
+    res.status(200).json({ status: 200, data: device });
+  } catch (err) {
+    console.log(err);
+    res.status(500);
+  }
+});
 app.post("/api/get-otp", async (req, res) => {
   try {
     const emails = await Device.find();
@@ -159,37 +168,43 @@ app.post("/api/get-otp", async (req, res) => {
     console.log(err);
   }
 });
-app.get("/api/get-data", async (req, res) => {
+app.post("/api/get-data", async (req, res) => {
   try {
-    const logs = await Log.aggregate([
-      {
-        $group: { _id: "$deviceID", logs: { $push: "$$ROOT" } },
-      },
-    ]);
-    const data = [];
-    logs.map((log) => {
-      const co2 = [];
-      const heartRate = [];
-      const temperature = [];
-      const color = [];
-      const updatedAt = [];
-      log.logs.map((l) => {
-        co2.push(l.co2);
-        heartRate.push(l.heartRate);
-        temperature.push(l.temperature);
-        color.push(l.color);
-        updatedAt.push(l.updatedAt);
-      });
-      data.push({
-        deviceID: log.deviceID,
-        co2,
-        heartRate,
-        temperature,
-        color,
-        updatedAt,
-      });
+    const logs = await Log.find({ deviceID: req.body.deviceID }).sort({
+      createdAt: -1,
     });
+    const co2 = [];
+    const heartRate = [];
+    const temperature = [];
+    const color = [];
+    const updatedAt = [];
+    logs.map((log) => {
+      co2.push(log.co2);
+      heartRate.push(log.heartRate);
+      temperature.push(log.temperature);
+      color.push(log.color);
+      updatedAt.push(log.updatedAt);
+    });
+    const data = {
+      co2,
+      heartRate,
+      temperature,
+      color,
+      updatedAt,
+    };
+
     res.status(200).json({ status: 200, data });
+  } catch (err) {
+    console.log(err);
+  }
+});
+app.post("/api/get-last-data", async (req, res) => {
+  try {
+    const logs = await Log.find({ deviceID: req.body.deviceID })
+      .limit(1)
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({ status: 200, logs });
   } catch (err) {
     console.log(err);
   }

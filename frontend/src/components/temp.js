@@ -32,49 +32,25 @@ const options = {
   },
 };
 
-const Temp = () => {
-  const [data, setData] = useState([]);
-  const [state, setState] = useState(false);
-  useEffect(() => {
-    fetch(constants.baseUrl + "/get-data", {
-      method: "GET",
-      headers: {
-        "content-type": "Application/json",
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setData(data.data);
-      });
-    console.log(data[0]);
-    setState(true);
-  }, []);
-  if (state) {
-    return (
-      <>
-        {data.map((d) => {
-          return (
-            <Line
-              options={options}
-              data={{
-                labels: d.updatedAt,
-                datasets: [
-                  {
-                    data: d.temperature,
-                    borderColor: "rgb(255, 99, 132)",
-                    backgroundColor: "rgba(255, 99, 132, 0.5)",
-                  },
-                ],
-              }}
-            />
-          );
-        })}
-      </>
-    );
+const Temp = (props) => {
+  if (props.temperature.length === 0 || props.dates.length === 0) {
+    return <h1>Loading</h1>;
   } else {
-    return <h1> Loading </h1>;
+    return (
+      <Line
+        options={options}
+        data={{
+          labels: props.updatedAt,
+          datasets: [
+            {
+              data: props.temperature,
+              borderColor: "rgb(255, 99, 132)",
+              backgroundColor: "rgba(255, 99, 132, 0.5)",
+            },
+          ],
+        }}
+      />
+    );
   }
 };
 

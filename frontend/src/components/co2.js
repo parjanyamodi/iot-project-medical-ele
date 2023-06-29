@@ -32,50 +32,26 @@ const options = {
   },
 };
 
-const Graph = () => {
-  const [data, setData] = useState([]);
-  const [state, setState] = useState(false);
-  useEffect(() => {
-    fetch(constants.baseUrl + "/get-data", {
-      method: "GET",
-      headers: {
-        "content-type": "Application/json",
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setData(data.data);
-      });
-    console.log(data[0]);
-    setState(true);
-  }, []);
-  if (state) {
-    return (
-      <>
-        {data.map((d) => {
-          return (
-            <Line
-              options={options}
-              data={{
-                labels: d.updatedAt,
-                datasets: [
-                  {
-                    data: d.co2,
-                    borderColor: "rgb(255, 99, 132)",
-                    backgroundColor: "rgba(255, 99, 132, 0.5)",
-                  },
-                ],
-              }}
-            />
-          );
-        })}
-      </>
-    );
+const CO2 = (props) => {
+  if (props.co2.length === 0 || props.dates.length === 0) {
+    return <h1>Loading</h1>;
   } else {
-    return <h1> Loading </h1>;
+    return (
+      <Line
+        options={options}
+        data={{
+          labels: props.dates,
+          datasets: [
+            {
+              data: props.co2,
+              borderColor: "rgb(255, 99, 132)",
+              backgroundColor: "rgba(255, 99, 132, 0.5)",
+            },
+          ],
+        }}
+      />
+    );
   }
 };
 
-export default Graph;
+export default CO2;
