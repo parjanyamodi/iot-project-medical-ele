@@ -14,6 +14,8 @@
 #define co2Zero 55 // calibrated CO2 0 level
 #define DHT_PIN D8
 #define DHT_TYPE DHT11
+
+#define PulseSensor D0
 const char *deviceID = "MDV0023";
 DHT dht(DHT_PIN, DHT_TYPE);
 const char *ssid = "HuskyOP_2.4G";
@@ -57,6 +59,7 @@ void setup()
   Serial.begin(74880);
   delay(2000);
   Serial.println("Starting....");
+  pinMode(PulseSensor, INPUT);
 
   connectToWiFi();
   delay(1000);
@@ -93,11 +96,11 @@ void loop()
 
       http.addHeader("Content-Type", "application/json");
       Serial.println("{\"co2\":\"" + String(getCO2()) + "\",\"heartRate\":\""
-                                                                          "90"
+                                                                          +String(getPulse())+
                                                                           "\",\"dht\":\"" +
                                        String(getTemp()) + "\",\"deviceID\":\"" + deviceID + "\",\"color\":" + String(getColor()) + "}");
       int httpResponseCode = http.POST("{\"co2\":\"" + String(getCO2()) + "\",\"heartRate\":\""
-                                                                          "90"
+                                                                          +String(getPulse())+
                                                                           "\",\"dht\":" +
                                        String(getTemp()) + ",\"deviceID\":\"" + deviceID + "\",\"color\":" + String(getColor()) + "}");
 
@@ -112,6 +115,12 @@ void loop()
     }
     lastTime = millis();
   }
+}
+
+float getPulse()
+{
+  return analogRead(PulseSensor); 
+
 }
 String getColor()
 {
