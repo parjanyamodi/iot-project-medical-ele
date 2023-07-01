@@ -117,7 +117,7 @@ const Dashboard = (props) => {
               </p>
               <p>
                 <strong>Age: </strong>
-                {deviceDetails.age}
+                {deviceDetails.age} Days
               </p>
               <p>
                 <strong>Mother's Name: </strong>
@@ -137,30 +137,55 @@ const Dashboard = (props) => {
           </div>
         </div>
         <div className="col-md-8 col-12">
-          <div className="row">
-            <div className="col-md-3 col-6 mt-3">
+          <div className="row justify-content-center">
+            <div className="col-md-2 col-6 mt-3">
               <div className="alert alert-warning">
                 <h3>{latestStats.co2}</h3>
                 <p>CO2 level</p>
               </div>
             </div>
-            <div className="col-md-3 col-6 mt-3">
+            <div className="col-md-2 col-6 mt-3">
               <div className="alert alert-warning">
                 <h3>{latestStats.heartRate}</h3>
                 <p>Heart Rate</p>
               </div>
             </div>
-            <div className="col-md-3 col-6 mt-3">
+            <div className="col-md-2 col-6 mt-3">
               <div className="alert alert-warning">
                 <h3>{latestStats.temperature}</h3>
                 <p>Temperature</p>
               </div>
             </div>
-            <div className="col-md-3 col-6 mt-3">
+            <div className="col-md-2 col-6 mt-3">
               <div className="alert alert-warning">
                 <h3>{latestStats.humidity}</h3>
                 <p>Humidity</p>
               </div>
+            </div>
+            <div className="col-md-3 col-6 mt-3">
+              {latestStats.color === "G" ? (
+                <div className="alert alert-success">
+                  <h3>Green</h3>
+                  <p>Treatment Type</p>
+                </div>
+              ) : latestStats.color === "B" ? (
+                <div className="alert alert-primary">
+                  <h3>Blue</h3>
+                  <p>Treatment Type</p>
+                </div>
+              ) : latestStats.color === "R" ? (
+                <div className="alert alert-danger">
+                  <h3>Red</h3>
+                  <p>Treatment Type</p>
+                </div>
+              ) : latestStats.color === "" ? (
+                <div className="alert alert-dark">
+                  <h3>Not Specified</h3>
+                  <p>Treatment Type</p>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
             <div className="col-md-12 col-12 mt-3">
               <div className="alert alert-warning">

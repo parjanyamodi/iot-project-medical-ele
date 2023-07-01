@@ -19,7 +19,7 @@ DHT dht(DHT_PIN, DHT_TYPE);
 const char *ssid = "HuskyOP_2.4G";
 const char *password = "pitbull96";
 
-const char *serverName = "http://65.2.144.203:4500/api/log";
+const char *serverName = "http://172.1.0.100:4500/api/log";
 WiFiClient client;
 Adafruit_TCS34725 tcs = Adafruit_TCS34725();
 
@@ -92,10 +92,14 @@ void loop()
       http.begin(client, serverName);
 
       http.addHeader("Content-Type", "application/json");
+      Serial.println("{\"co2\":\"" + String(getCO2()) + "\",\"heartRate\":\""
+                                                                          "90"
+                                                                          "\",\"dht\":\"" +
+                                       String(getTemp()) + "\",\"deviceID\":\"" + deviceID + "\",\"color\":" + String(getColor()) + "}");
       int httpResponseCode = http.POST("{\"co2\":\"" + String(getCO2()) + "\",\"heartRate\":\""
                                                                           "90"
-                                                                          "\",\"temperature\":\"" +
-                                       String(getTemp()) + "\",\"deviceID\":\"" + deviceID + "\",\"color\":" + String(getColor()) + "}");
+                                                                          "\",\"dht\":" +
+                                       String(getTemp()) + ",\"deviceID\":\"" + deviceID + "\",\"color\":" + String(getColor()) + "}");
 
       Serial.print("HTTP Response code: ");
       Serial.println(httpResponseCode);
@@ -119,10 +123,14 @@ String getColor()
 
   return "{\"red\":\"" + String(r) + "\",\"green\":\"" + String(g) + "\",\"blue\":\"" + String(b) + "\"}";
 }
-float getTemp()
+String getTemp()
 {
-  float f = dht.readTemperature(true);
-  return f;
+  float h = dht.readHumidity();
+
+  float t = dht.readTemperature();
+
+  return "{\"temperature\":\"" + String(t) + "\",\"humidity\":\"" + String(h) + "\"}";
+
 }
 int getCO2()
 {

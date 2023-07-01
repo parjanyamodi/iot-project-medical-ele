@@ -37,6 +37,7 @@ const Log = mongoose.model(
     {
       heartRate: Number,
       temperature: Number,
+      humidity: Number,
       co2: Number,
       deviceID: String,
       color: String,
@@ -58,7 +59,9 @@ const Device = mongoose.model(
     motherName: String,
   })
 );
-
+function isNumber(value) {
+  return typeof value === "number" && isFinite(value);
+}
 // Create a POST route to insert data into MongoDB
 app.post("/api/log", async (req, res) => {
   console.log(req.body);
@@ -66,7 +69,10 @@ app.post("/api/log", async (req, res) => {
     // Get the post data from the request
     const data = {
       heartRate: req.body.heartRate,
-      temperature: req.body.temperature,
+      temperature: isNumber(req.body.dht.temperature)
+        ? req.body.dht.temperature
+        : 0,
+      humidity: isNumber(req.body.dht.humidity) ? req.body.dht.humidity : 0,
       co2: req.body.co2,
       deviceID: req.body.deviceID,
       color:
