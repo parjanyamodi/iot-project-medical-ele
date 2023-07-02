@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 
 const otpMailer = require("./mailer");
 
+const sendAlert = require("./alert");
+
 // Express requirements
 const app = express();
 app.use(express.json({ limit: "50mb" }));
@@ -98,6 +100,37 @@ app.post("/api/log", async (req, res) => {
 
     // Save the user to MongoDB
     const logInserted = await log.save();
+
+    var shouldSend = false;
+    console.log(device);
+    if (data.temperature < 29 || data.temperature > 38) {
+      shouldSend = true;
+    }
+    if (data.humidity < 65 || data.humidity > 90) {
+      shouldSend = true;
+    }
+    if (data.color === "B" || data.color === "G") {
+      shouldSend = true;
+    }
+
+    if (shouldSend) {
+      var to = ["siddharthm.ml19@bmsce.ac.in"];
+      if (
+        device.doctorEmail ||
+        device.doctorEmail !== "" ||
+        device.doctorEmail != null
+      ) {
+        to.push(device.doctorEmail);
+      }
+      if (
+        device.attenderEmail ||
+        device.attenderEmail !== "" ||
+        device.attenderEmail != null
+      ) {
+        to.push(device.attenderEmail);
+      }
+      sendAlert(data, { to });
+    }
     res.status(200).json({
       inserted: true,
       data: logInserted,

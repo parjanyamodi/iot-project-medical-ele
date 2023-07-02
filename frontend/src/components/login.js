@@ -40,6 +40,11 @@ const Login = () => {
   return (
     <div className="container">
       <div className="row justify-content-center mt-5">
+        <div className="col-12">
+          <h1>MedCloud</h1>
+        </div>
+      </div>
+      <div className="row justify-content-center mt-5">
         <div className="col-md-6 col-12">
           <form>
             <div class="form-group mb-2">

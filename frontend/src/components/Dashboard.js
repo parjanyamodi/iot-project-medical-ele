@@ -78,6 +78,11 @@ const Dashboard = (props) => {
   };
   return (
     <div className="container mt-5">
+      <div className="row justify-content-center mt-5">
+        <div className="col-12">
+          <h1>MedCloud</h1>
+        </div>
+      </div>
       <div className="row justify-content-start back-btn mb-5">
         <div className="col-12">
           <button

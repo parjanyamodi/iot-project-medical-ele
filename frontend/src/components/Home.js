@@ -24,6 +24,11 @@ const Home = (props) => {
 
   return (
     <div className="container mt-5">
+      <div className="row justify-content-center mt-5">
+        <div className="col-12">
+          <h1>MedCloud</h1>
+        </div>
+      </div>
       <div className="row">
         <div className="col-12">
           <div className="alert alert-warning">
