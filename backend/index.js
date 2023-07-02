@@ -177,7 +177,7 @@ app.post("/api/get-otp", async (req, res) => {
 app.post("/api/get-data", async (req, res) => {
   try {
     const logs = await Log.find({ deviceID: req.body.deviceID }).sort({
-      createdAt: -1,
+      createdAt: 1,
     });
     const co2 = [];
     const heartRate = [];

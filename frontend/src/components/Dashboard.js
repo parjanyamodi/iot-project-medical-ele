@@ -138,25 +138,19 @@ const Dashboard = (props) => {
         </div>
         <div className="col-md-8 col-12">
           <div className="row justify-content-center">
-            <div className="col-md-2 col-6 mt-3">
-              <div className="alert alert-warning">
-                <h3>{latestStats.co2}</h3>
-                <p>CO2 level</p>
-              </div>
-            </div>
-            <div className="col-md-2 col-6 mt-3">
+            <div className="col-md-3 col-6 mt-3">
               <div className="alert alert-warning">
                 <h3>{latestStats.heartRate}</h3>
                 <p>Heart Rate</p>
               </div>
             </div>
-            <div className="col-md-2 col-6 mt-3">
+            <div className="col-md-3 col-6 mt-3">
               <div className="alert alert-warning">
                 <h3>{latestStats.temperature}</h3>
                 <p>Temperature</p>
               </div>
             </div>
-            <div className="col-md-2 col-6 mt-3">
+            <div className="col-md-3 col-6 mt-3">
               <div className="alert alert-warning">
                 <h3>{latestStats.humidity}</h3>
                 <p>Humidity</p>
@@ -209,16 +203,23 @@ const Dashboard = (props) => {
             heartRate={historicalStats.heartRate}
             dates={historicalStats.updatedAt}
           />
+          <h3>Heart rate</h3>
         </div>
-        <div className="col-md-6 col-12">
-          <CO2 co2={historicalStats.co2} dates={historicalStats.updatedAt} />
-        </div>
+
         <div className="col-md-6 col-12">
           <Temp
             temperature={historicalStats.temperature}
             dates={historicalStats.updatedAt}
           />
+          <h3>Temperature</h3>
         </div>
+        {/* <div className="col-md-6 col-12">
+          <Temp
+            temperature={historicalStats.humidity}
+            dates={historicalStats.updatedAt}
+          />
+          <h3>Humidity</h3>
+        </div> */}
       </div>
     </div>
   );
