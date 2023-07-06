@@ -40,7 +40,7 @@ const Temp = (props) => {
       <Line
         options={options}
         data={{
-          labels: props.updatedAt,
+          labels: props.dates,
           datasets: [
             {
               data: props.temperature,

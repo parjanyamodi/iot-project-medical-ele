@@ -13,6 +13,7 @@ const Dashboard = (props) => {
     createdAt: [],
     co2: [],
     temperature: [],
+    humidity: [],
   });
   const [searchParams] = useSearchParams();
   useEffect(() => {
@@ -218,13 +219,13 @@ const Dashboard = (props) => {
           />
           <h3>Temperature</h3>
         </div>
-        {/* <div className="col-md-6 col-12">
+        <div className="col-md-6 col-12">
           <Temp
             temperature={historicalStats.humidity}
             dates={historicalStats.updatedAt}
           />
           <h3>Humidity</h3>
-        </div> */}
+        </div>
       </div>
     </div>
   );

@@ -216,12 +216,14 @@ app.post("/api/get-data", async (req, res) => {
     const heartRate = [];
     const temperature = [];
     const color = [];
+    const humidity = [];
     const updatedAt = [];
     logs.map((log) => {
       co2.push(log.co2);
       heartRate.push(log.heartRate);
       temperature.push(log.temperature);
       color.push(log.color);
+      humidity.push(log.humidity);
       updatedAt.push(log.updatedAt);
     });
     const data = {
@@ -229,6 +231,7 @@ app.post("/api/get-data", async (req, res) => {
       heartRate,
       temperature,
       color,
+      humidity,
       updatedAt,
     };
 
@@ -239,11 +242,11 @@ app.post("/api/get-data", async (req, res) => {
 });
 app.post("/api/get-last-data", async (req, res) => {
   try {
-    const logs = await Log.find({ deviceID: req.body.deviceID })
-      .limit(1)
-      .sort({ createdAt: -1 });
+    const logs = await Log.find({ deviceID: req.body.deviceID }).sort({
+      createdAt: -1,
+    });
 
-    res.status(200).json({ status: 200, logs });
+    res.status(200).json({ status: 200, logs: [logs[0]] });
   } catch (err) {
     console.log(err);
   }
