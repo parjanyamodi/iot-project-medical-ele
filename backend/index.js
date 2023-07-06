@@ -38,8 +38,8 @@ const Log = mongoose.model(
   new mongoose.Schema(
     {
       heartRate: Number,
-      temperature: Number,
-      humidity: Number,
+      temperature: String,
+      humidity: String,
       co2: Number,
       deviceID: String,
       color: String,
@@ -71,10 +71,8 @@ app.post("/api/log", async (req, res) => {
     // Get the post data from the request
     const data = {
       heartRate: req.body.heartRate,
-      temperature: isNumber(req.body.dht.temperature)
-        ? req.body.dht.temperature
-        : 0,
-      humidity: isNumber(req.body.dht.humidity) ? req.body.dht.humidity : 0,
+      temperature: req.body.dht.temperature,
+      humidity: req.body.dht.humidity,
       co2: req.body.co2,
       deviceID: req.body.deviceID,
       color:
